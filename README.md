@@ -10,6 +10,10 @@ A professional web-based screenshot builder designed for app developers and desi
   <img src="public/thumbnail.jpg" alt="Snapframe Editor" style="border-radius: 12px; max-width: 100%;" />
 </p>
 
+<p align="center">
+  <video src="public/snapframe_video.mp4" controls style="border-radius: 12px; max-width: 100%;" />
+</p>
+
 ## ✨ Features
 
 - **Professional Templates**: Choose from curated themes or create your own custom styles.
