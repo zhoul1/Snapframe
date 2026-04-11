@@ -198,7 +198,7 @@ export function ScreenshotCard({
     // gradient — glow blobs + subtle grid
     const tileSize = W * 0.09;
     return (
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', isolation: 'isolate' }}>
         <div style={{
           position: 'absolute', width: W * 0.95, height: W * 0.95, borderRadius: '50%',
           background: `radial-gradient(circle, ${accent}1e 0%, transparent 68%)`,
@@ -322,11 +322,12 @@ export function ScreenshotCard({
             alignItems: 'center',
             gap: W * 0.02,
             background: pillBg,
-            backdropFilter: 'blur(16px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(16px) saturate(1.5)',
-            border: `1.5px solid ${isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.14)'}`,
-            borderLeft: side === 'left' ? `3px solid ${color}` : undefined,
-            borderRight: side === 'right' ? `3px solid ${color}` : undefined,
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            borderTop: `1.5px solid ${isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.14)'}`,
+            borderBottom: `1.5px solid ${isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.14)'}`,
+            borderLeft: side === 'left' ? `3px solid ${color}` : `1.5px solid ${isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.14)'}`,
+            borderRight: side === 'right' ? `3px solid ${color}` : `1.5px solid ${isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.14)'}`,
             borderRadius: W * 0.022,
             padding: `${H * 0.009}px ${W * 0.028}px`,
             maxWidth: maxPillW,
@@ -496,6 +497,7 @@ export function ScreenshotCard({
     borderRadius: scale < 0.5 ? W * 0.03 : 0,
     background: bg, fontFamily: pairing.headingFont,
     transform: `scale(${scale})`, transformOrigin: 'top left',
+    willChange: 'transform',
   };
 
   // ── OVERLAY layout ──

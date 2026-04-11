@@ -10,6 +10,8 @@ A professional web-based screenshot builder designed for app developers and desi
   <a href="https://pawandeep-prog.github.io/Snapframe/" target="_blank">
     <img src="https://img.shields.io/badge/Try%20it%20Live-GitHub%20Pages-blue?style=for-the-badge&logo=github" alt="Live Demo" />
   </a>
+  <img src="https://img.shields.io/badge/Chrome-Supported-brightgreen?style=for-the-badge&logo=googlechrome" alt="Chrome Supported" />
+  <img src="https://img.shields.io/badge/Firefox-Known%20Issues-orange?style=for-the-badge&logo=firefox" alt="Firefox Known Issues" />
 </p>
 
 <p align="center">
@@ -37,6 +39,13 @@ A professional web-based screenshot builder designed for app developers and desi
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Export Engine**: `html-to-image` & `jszip`
+
+## ⚠️ Browser Compatibility
+
+| Browser | Status |
+|---------|--------|
+| Chrome | Fully supported |
+| Firefox | Known rendering issues — investigation in progress |
 
 ## 🌐 Live Demo
 
