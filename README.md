@@ -7,6 +7,12 @@
 A professional web-based screenshot builder designed for app developers and designers. Create stunning, marketing-ready screenshots for your apps with ease.
 
 <p align="center">
+  <a href="https://pawandeep-prog.github.io/Snapframe/" target="_blank">
+    <img src="https://img.shields.io/badge/Try%20it%20Live-GitHub%20Pages-blue?style=for-the-badge&logo=github" alt="Live Demo" />
+  </a>
+</p>
+
+<p align="center">
   <img src="public/thumbnail.jpg" alt="Snapframe Editor" style="border-radius: 12px; max-width: 100%;" />
 </p>
 
@@ -31,6 +37,12 @@ A professional web-based screenshot builder designed for app developers and desi
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Export Engine**: `html-to-image` & `jszip`
+
+## 🌐 Live Demo
+
+No install needed — just open it in your browser:
+
+**[https://pawandeep-prog.github.io/Snapframe/](https://pawandeep-prog.github.io/Snapframe/)**
 
 ## 🛠️ Local Setup
 
