@@ -30,6 +30,7 @@ A professional web-based screenshot builder designed for app developers and desi
 - **High-Quality Export**: Export your screenshots as PNG, JPG, or a compressed ZIP archive for all resolutions.
 - **Undo/Redo Support**: Full history management to iterate quickly without fear.
 - **Offline First**: Fast and responsive UI with local state management.
+- **JSON Editor**: Build entire screenshot sets programmatically — paste JSON directly and see a live preview side by side. Perfect for AI-assisted workflows.
 
 ## 🚀 Tech Stack
 
@@ -39,6 +40,25 @@ A professional web-based screenshot builder designed for app developers and desi
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Export Engine**: `html-to-image` & `jszip`
+
+## 🤖 JSON Editor & AI Workflow
+
+The **JSON Editor** (toolbar → `JSON` button) lets you create and edit projects entirely in JSON — no clicking through the UI required.
+
+**Split-panel interface:**
+- **Left** — editable JSON with live validation and a status bar showing error details
+- **Right** — live `ScreenshotCard` preview that updates as you type, with slide navigation for multi-slide projects
+
+**Typical AI-powered flow:**
+1. Open the JSON Editor and click **Copy** to grab the current project JSON
+2. Paste it into Claude, ChatGPT, or any AI tool with a prompt like:
+   > *"Add 3 slides for a meditation app using a calm green theme"*
+3. Paste the AI response back into the editor — the live preview updates instantly
+4. Click **Apply & Close** to load it into the project, then export as usual
+
+See [`JSON_SCHEMA.md`](JSON_SCHEMA.md) for the full field reference, all valid values, and copy-paste examples.
+
+---
 
 ## ⚠️ Browser Compatibility
 
