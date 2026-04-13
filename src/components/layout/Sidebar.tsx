@@ -36,13 +36,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-72 flex-shrink-0 bg-[#0d0d18] border-r border-white/6 flex flex-col h-full">
-      {/* Logo */}
-      <div className="px-5 pt-5 pb-4 border-b border-white/6">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Snapframe Logo" className="w-8 h-8 rounded-lg" />
-          <span className="font-semibold text-white text-sm tracking-tight">SnapFrame</span>
-        </div>
-      </div>
+      
 
       {/* Nav tabs */}
       <div className="flex border-b border-white/6">

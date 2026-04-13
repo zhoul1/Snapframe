@@ -3,10 +3,14 @@ import { useProjectStore, useTemporalStore } from '../../store/useProjectStore';
 import { useExport } from '../../hooks/useExport';
 import { useProjectIO } from '../../hooks/useProjectIO';
 import { Button } from '../ui/Button';
-import { Download, FolderOpen, Save, Loader2, Image, Undo2, Redo2, Plus, Check, X } from 'lucide-react';
+import { Download, FolderOpen, Save, Loader2, Image, Undo2, Redo2, Plus, Check, X, Code2 } from 'lucide-react';
 import { getResolution } from '../../lib/resolutions';
 
-export function Toolbar() {
+interface ToolbarProps {
+  onOpenJsonEditor: () => void;
+}
+
+export function Toolbar({ onOpenJsonEditor }: ToolbarProps) {
   const { 
     meta, slides, activeSlideId, selectedResolutions,
     activeResolutionScope, setActiveResolutionScope,
@@ -153,6 +157,10 @@ export function Toolbar() {
         <Button size="sm" variant="ghost" onClick={saveProject}>
           <Save className="w-3.5 h-3.5" />
           Save
+        </Button>
+        <Button size="sm" variant="ghost" onClick={onOpenJsonEditor} title="JSON Editor">
+          <Code2 className="w-3.5 h-3.5" />
+          JSON
         </Button>
         <div className="w-px h-5 bg-white/10" />
         <Button size="sm" variant="ghost" onClick={() => undo()} disabled={!canUndo} title="Undo (Cmd+Z)">
