@@ -34,6 +34,14 @@ export const RESOLUTIONS: Resolution[] = [
     aspectRatio: '3:4',
   },
   {
+    id: 'ipad-pro-13-landscape',
+    label: 'iPad Pro 13" (Landscape)',
+    platform: 'ios',
+    width: 2752,
+    height: 2064,
+    aspectRatio: '4:3',
+  },
+  {
     id: 'android-phone',
     label: 'Android Phone',
     platform: 'android',
@@ -48,6 +56,14 @@ export const RESOLUTIONS: Resolution[] = [
     width: 1200,
     height: 1920,
     aspectRatio: '10:16',
+  },
+  {
+    id: 'android-tablet-landscape',
+    label: 'Android Tablet 7" (Landscape)',
+    platform: 'android',
+    width: 1920,
+    height: 1200,
+    aspectRatio: '16:10',
   },
   {
     id: 'custom',

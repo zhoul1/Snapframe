@@ -316,8 +316,10 @@ Use in `meta.resolutionPresets`. The first entry in the array is used for the li
 | `iphone-65` | iPhone 6.5" | iOS | 1284 × 2778 px |
 | `iphone-55` | iPhone 5.5" | iOS | 1242 × 2208 px |
 | `ipad-pro-13` | iPad Pro 13" | iOS | 2064 × 2752 px |
+| `ipad-pro-13-landscape` | iPad Pro 13" (Landscape) | iOS | 2752 × 2064 px |
 | `android-phone` | Android Phone | Android | 1080 × 1920 px |
 | `android-tablet` | Android Tablet 7" | Android | 1200 × 1920 px |
+| `android-tablet-landscape` | Android Tablet 7" (Landscape) | Android | 1920 × 1200 px |
 | `custom` | Custom Size | Both | Defined by `meta.customResolution` |
 
 > **App Store requirement:** `iphone-69` is required for iOS submissions. Always include it.

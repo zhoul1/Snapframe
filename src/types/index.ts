@@ -23,8 +23,10 @@ export type ResolutionId =
   | 'iphone-65'
   | 'iphone-55'
   | 'ipad-pro-13'
+  | 'ipad-pro-13-landscape'
   | 'android-phone'
   | 'android-tablet'
+  | 'android-tablet-landscape'
   | 'custom';
 
 export interface Resolution {

@@ -76,8 +76,10 @@ export function SlideEditor({ slide }: SlideEditorProps) {
     updateSlide(slide.id, changes);
   }
 
-  const needsIPad = selectedResolutions.includes('ipad-pro-13');
-  const needsAndroidTablet = selectedResolutions.includes('android-tablet');
+  const needsIPad = selectedResolutions.includes('ipad-pro-13')
+    || selectedResolutions.includes('ipad-pro-13-landscape');
+  const needsAndroidTablet = selectedResolutions.includes('android-tablet')
+    || selectedResolutions.includes('android-tablet-landscape');
 
   return (
     <div className="flex flex-col gap-4">
