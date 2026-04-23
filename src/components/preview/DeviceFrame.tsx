@@ -1,14 +1,28 @@
 import type { DeviceKind } from '../../types';
 export type { DeviceKind };
+export type DeviceOrientation = 'portrait' | 'landscape';
 
 /** Returns the height/width aspect ratio for a given device kind */
-export function getDeviceAspectRatio(kind: DeviceKind): number {
+export function getDeviceAspectRatio(
+  kind: DeviceKind,
+  orientation: DeviceOrientation = 'portrait'
+): number {
+  let portraitRatio: number;
   switch (kind) {
-    case 'ipad': return 2752 / 2064; // ~1.334
-    case 'android-tablet': return 1920 / 1200; // 1.6
-    case 'android-phone': return 2.05;
-    default: return 2.16; // iphone tall
+    case 'ipad':
+      portraitRatio = 2752 / 2064; // ~1.334
+      break;
+    case 'android-tablet':
+      portraitRatio = 1920 / 1200; // 1.6
+      break;
+    case 'android-phone':
+      portraitRatio = 2.05;
+      break;
+    default:
+      portraitRatio = 2.16; // iphone tall
+      break;
   }
+  return orientation === 'landscape' ? 1 / portraitRatio : portraitRatio;
 }
 
 interface DeviceFrameProps {
@@ -17,6 +31,7 @@ interface DeviceFrameProps {
   accentColor?: string;
   frameStyle?: 'dark' | 'light' | 'black' | 'white';
   deviceKind?: DeviceKind;
+  orientation?: DeviceOrientation;
   deviceFrameType?: 'realistic' | 'generic';
   showSensor?: boolean;
 }
@@ -60,16 +75,20 @@ export function DeviceFrame({
   accentColor = '#00C8DC',
   frameStyle = 'dark',
   deviceKind = 'iphone',
+  orientation = 'portrait',
   deviceFrameType = 'realistic',
   showSensor = true,
 }: DeviceFrameProps) {
   const w = frameWidthPx;
-  const aspectRatio = getDeviceAspectRatio(deviceKind);
+  const aspectRatio = getDeviceAspectRatio(deviceKind, orientation);
   const h = w * aspectRatio;
+  const unit = Math.min(w, h);
+  const isLandscape = orientation === 'landscape';
 
   const isTablet = deviceKind === 'ipad' || deviceKind === 'android-tablet';
-  const radius = isTablet ? w * 0.055 : w * 0.115;
-  const bezel = isTablet ? w * 0.025 : w * 0.028;
+  const frameRef = isTablet ? unit : w;
+  const radius = isTablet ? frameRef * 0.055 : w * 0.115;
+  const bezel = isTablet ? frameRef * 0.025 : w * 0.028;
   const screenRadius = radius - bezel * 0.65;
 
   const frameBg = getFrameBackground(frameStyle);
@@ -112,7 +131,23 @@ export function DeviceFrame({
     }
     if (deviceKind === 'ipad') {
       // Face ID thin capsule
-      const bW = w * 0.13, bH = w * 0.022;
+      const bW = unit * 0.13;
+      const bH = unit * 0.022;
+      if (isLandscape) {
+        return (
+          <div style={{
+            position: 'absolute',
+            left: bezel * 1.2,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: bH,
+            height: bW,
+            background: camColor,
+            borderRadius: bH / 2,
+            zIndex: 10,
+          }} />
+        );
+      }
       return (
         <div style={{
           position: 'absolute',
@@ -128,13 +163,22 @@ export function DeviceFrame({
     }
     if (deviceKind === 'android-tablet') {
       // Front camera dot, slightly off-center left on tablets
-      const dotR = w * 0.04;
+      const dotR = unit * 0.04;
+      const pos: React.CSSProperties = isLandscape
+        ? {
+            left: bezel * 1.2,
+            top: '50%',
+            transform: 'translateY(-50%)',
+          }
+        : {
+            top: bezel * 1.2,
+            left: '50%',
+            transform: 'translateX(-50%)',
+          };
       return (
         <div style={{
           position: 'absolute',
-          top: bezel * 1.2,
-          left: '50%',
-          transform: 'translateX(-50%)',
+          ...pos,
           width: dotR, height: dotR,
           background: camColor,
           borderRadius: '50%',
@@ -148,7 +192,23 @@ export function DeviceFrame({
   // ── Bottom indicator (tablets only) ──
   function renderBottomIndicator() {
     if (!showSensor || !isTablet || deviceFrameType === 'generic') return null;
-    const barW = w * 0.28, barH = Math.max(2, w * 0.012);
+    const barW = unit * 0.28;
+    const barH = Math.max(2, unit * 0.012);
+    if (isLandscape) {
+      return (
+        <div style={{
+          position: 'absolute',
+          right: bezel * 1.5,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: barH,
+          height: barW,
+          background: frameStyle === 'white' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.22)',
+          borderRadius: barH / 2,
+          zIndex: 10,
+        }} />
+      );
+    }
     return (
       <div style={{
         position: 'absolute',

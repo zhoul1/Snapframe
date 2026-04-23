@@ -31,10 +31,14 @@ function parseBadges(text: string): string[] {
 }
 
 function getDeviceKind(resolution: Resolution): DeviceKind {
-  if (resolution.id === 'ipad-pro-13') return 'ipad';
-  if (resolution.id === 'android-tablet') return 'android-tablet';
+  if (resolution.id === 'ipad-pro-13' || resolution.id === 'ipad-pro-13-landscape') return 'ipad';
+  if (resolution.id === 'android-tablet' || resolution.id === 'android-tablet-landscape') return 'android-tablet';
   if (resolution.id === 'android-phone') return 'android-phone';
   return 'iphone';
+}
+
+function getDeviceOrientation(resolution: Resolution): 'portrait' | 'landscape' {
+  return resolution.width >= resolution.height ? 'landscape' : 'portrait';
 }
 
 /** Returns true if textColor is dark-valued → the background is light */
@@ -95,7 +99,8 @@ export function ScreenshotCard({
   const deviceOffsetY = (effectiveTheme.deviceOffsetY ?? 0) * H;
 
   const deviceKind = getDeviceKind(resolution);
-  const deviceAspectRatio = getDeviceAspectRatio(deviceKind);
+  const deviceOrientation = getDeviceOrientation(resolution);
+  const deviceAspectRatio = getDeviceAspectRatio(deviceKind, deviceOrientation);
   const textAlign = (effectiveTheme.textAlign ?? 'center') as React.CSSProperties['textAlign'];
 
   // Layout spacing (fraction of H → px)
@@ -249,6 +254,7 @@ export function ScreenshotCard({
             accentColor={accent}
             frameStyle={frameStyle}
             deviceKind={deviceKind}
+            orientation={deviceOrientation}
             deviceFrameType={deviceFrameType}
             showSensor={showSensor}
           />
