@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ScreenshotCard } from '../preview/ScreenshotCard';
 import { getResolutionWithCustom } from '../../lib/resolutions';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function JsonEditorPanel({ onClose }: Props) {
+  const { t } = useTranslation();
   const { exportProject, importProject } = useProjectStore();
 
   const [jsonText, setJsonText] = useState(() => JSON.stringify(exportProject(), null, 2));
@@ -111,27 +113,27 @@ export function JsonEditorPanel({ onClose }: Props) {
       <div className="h-14 flex items-center justify-between px-5 border-b border-white/6 bg-[#0d0d18] flex-shrink-0">
         <div className="flex items-center gap-2.5">
           <Code2 className="w-4 h-4 text-violet-400" />
-          <span className="text-sm font-semibold text-white/80">JSON Editor</span>
+          <span className="text-sm font-semibold text-white/80">{t('JSON Editor')}</span>
           <span className="text-white/20">·</span>
-          <span className="text-xs text-white/35">Edit directly or paste AI-generated JSON</span>
+          <span className="text-xs text-white/35">{t('Edit directly or paste AI-generated JSON')}</span>
         </div>
 
         <div className="flex items-center gap-2">
           <Button size="sm" variant="ghost" onClick={handleFormat}>
-            Format
+            {t('Format')}
           </Button>
           <Button size="sm" variant="ghost" onClick={handleCopy}>
             {copied
-              ? <><Check className="w-3.5 h-3.5 text-emerald-400" /> Copied!</>
-              : <><Copy className="w-3.5 h-3.5" /> Copy</>
+              ? <><Check className="w-3.5 h-3.5 text-emerald-400" /> {t('Copied!')}</>
+              : <><Copy className="w-3.5 h-3.5" /> {t('Copy')}</>
             }
           </Button>
           <div className="w-px h-5 bg-white/10" />
           <Button size="sm" variant="ghost" onClick={onClose}>
-            Discard
+            {t('Discard')}
           </Button>
           <Button size="sm" variant="primary" onClick={handleApply} disabled={!isValid}>
-            Apply & Close
+            {t('Apply & Close')}
           </Button>
           <button
             onClick={onClose}
@@ -165,7 +167,7 @@ export function JsonEditorPanel({ onClose }: Props) {
             <div className={`flex items-center gap-1.5 text-xs font-medium ${isValid ? 'text-emerald-400' : 'text-red-400'}`}>
               <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isValid ? 'bg-emerald-400' : 'bg-red-400'}`} />
               {isValid
-                ? `Valid JSON · ${slideCount} slide${slideCount !== 1 ? 's' : ''}`
+                ? `${t('Valid JSON')} · ${t('slide', { count: slideCount })}`
                 : error}
             </div>
             {isValid && (
@@ -196,7 +198,7 @@ export function JsonEditorPanel({ onClose }: Props) {
           {/* Nav bar */}
           <div className="relative z-10 h-12 flex items-center justify-between px-5 flex-shrink-0">
             <span className="text-[10px] font-medium text-white/25 uppercase tracking-widest">
-              Live Preview
+              {t('Live Preview')}
             </span>
 
             {slideCount > 1 && (
@@ -250,7 +252,7 @@ export function JsonEditorPanel({ onClose }: Props) {
           {!isValid && (
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#080810]/70 backdrop-blur-sm">
               <div className="bg-red-500/10 border border-red-500/25 rounded-2xl px-8 py-6 max-w-xs text-center">
-                <p className="text-red-400 text-sm font-semibold mb-1.5">Invalid JSON</p>
+                <p className="text-red-400 text-sm font-semibold mb-1.5">{t('Invalid JSON')}</p>
                 <p className="text-red-400/60 text-xs leading-relaxed">{error}</p>
               </div>
             </div>

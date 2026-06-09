@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { useProjectStore } from '../../store/useProjectStore';
 import { RESOLUTIONS } from '../../lib/resolutions';
 import type { ResolutionId } from '../../types';
 
 export function ResolutionPicker() {
+  const { t } = useTranslation();
   const { selectedResolutions, setMeta, meta } = useProjectStore();
 
   function toggleResolution(id: ResolutionId) {
@@ -36,7 +38,7 @@ export function ResolutionPicker() {
                 <p className="text-xs font-medium">{r.label}</p>
                 {isPreviewed && selected && (
                   <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-violet-500/30 text-violet-300 font-medium leading-none">
-                    Preview
+                    {t('Preview')}
                   </span>
                 )}
               </div>
@@ -66,7 +68,7 @@ export function ResolutionPicker() {
       {selectedResolutions.includes('custom') && (
         <div className="flex gap-2 mt-1">
           <div className="flex-1 flex flex-col gap-1">
-            <label className="text-[10px] text-white/40 font-medium">Width</label>
+            <label className="text-[10px] text-white/40 font-medium">{t('Width')}</label>
             <input
               type="number"
               value={meta.customResolution?.width ?? 1080}
@@ -84,7 +86,7 @@ export function ResolutionPicker() {
             />
           </div>
           <div className="flex-1 flex flex-col gap-1">
-            <label className="text-[10px] text-white/40 font-medium">Height</label>
+            <label className="text-[10px] text-white/40 font-medium">{t('Height')}</label>
             <input
               type="number"
               value={meta.customResolution?.height ?? 1920}

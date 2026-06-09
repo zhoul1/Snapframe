@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProjectStore } from '../../store/useProjectStore';
 import { SlideEditor } from '../editor/SlideEditor';
 import { ThemePicker } from '../editor/ThemePicker';
@@ -10,6 +11,7 @@ import { Plus, Layers, Palette, Smartphone, Monitor, Settings, Check, X } from '
 type Panel = 'slides' | 'design' | 'device' | 'resolution' | 'project';
 
 export function Sidebar() {
+  const { t } = useTranslation();
   const { slides, activeSlideId, setActiveSlide, addSlide, meta, setMeta, createNewProject } = useProjectStore();
   const [panel, setPanel] = useState<Panel>('slides');
   const [confirmingReset, setConfirmingReset] = useState(false);
@@ -27,11 +29,11 @@ export function Sidebar() {
   }
 
   const navItems: { id: Panel; icon: React.ReactNode; label: string }[] = [
-    { id: 'slides', icon: <Layers className="w-4 h-4" />, label: 'Slides' },
-    { id: 'design', icon: <Palette className="w-4 h-4" />, label: 'Design' },
-    { id: 'device', icon: <Smartphone className="w-4 h-4" />, label: 'Device' },
-    { id: 'resolution', icon: <Monitor className="w-4 h-4" />, label: 'Export Size' },
-    { id: 'project', icon: <Settings className="w-4 h-4" />, label: 'Project' },
+    { id: 'slides', icon: <Layers className="w-4 h-4" />, label: t('Slides') },
+    { id: 'design', icon: <Palette className="w-4 h-4" />, label: t('Design') },
+    { id: 'device', icon: <Smartphone className="w-4 h-4" />, label: t('Device') },
+    { id: 'resolution', icon: <Monitor className="w-4 h-4" />, label: t('Export Size') },
+    { id: 'project', icon: <Settings className="w-4 h-4" />, label: t('Project') },
   ];
 
   return (
@@ -86,10 +88,10 @@ export function Sidebar() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-medium truncate ${isActive ? 'text-white' : 'text-white/60'}`}>
-                        {slide.header || 'Untitled'}
-                      </p>
-                      <p className="text-[10px] text-white/30 mt-0.5">Slide {idx + 1}</p>
+                        <p className={`text-xs font-medium truncate ${isActive ? 'text-white' : 'text-white/60'}`}>
+                          {slide.header || t('Untitled')}
+                        </p>
+                        <p className="text-[10px] text-white/30 mt-0.5">{t('Slide')} {idx + 1}</p>
                     </div>
                   </button>
                 );
@@ -104,7 +106,7 @@ export function Sidebar() {
               className="w-full justify-center"
             >
               <Plus className="w-3.5 h-3.5" />
-              Add Slide
+              {t('Add Slide')}
               <span className="text-white/30 text-[10px] ml-1">{slides.length}/10</span>
             </Button>
 
@@ -132,7 +134,7 @@ export function Sidebar() {
           <div className="flex flex-col gap-4">
             <Input
               id="app-name"
-              label="App Name"
+              label={t('App Name')}
               value={meta.appName}
               onChange={(e) => setMeta({ appName: e.target.value })}
               placeholder="My App"
@@ -140,7 +142,7 @@ export function Sidebar() {
 
             {/* App icon upload */}
             <div>
-              <p className="text-xs text-white/50 font-medium mb-2">App Icon</p>
+              <p className="text-xs text-white/50 font-medium mb-2">{t('App Icon')}</p>
               <div className="flex items-center gap-3">
                 <div
                   onClick={() => iconRef.current?.click()}
@@ -149,15 +151,15 @@ export function Sidebar() {
                   {meta.iconDataUrl ? (
                     <img src={meta.iconDataUrl} alt="Icon" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xs text-white/30">Icon</span>
+                    <span className="text-xs text-white/30">{t('App Icon')}</span>
                   )}
                 </div>
                 <Button size="sm" onClick={() => iconRef.current?.click()}>
-                  Upload Icon
+                  {t('Upload Icon')}
                 </Button>
                 {meta.iconDataUrl && (
                   <Button size="sm" variant="ghost" onClick={() => setMeta({ iconDataUrl: null })}>
-                    Clear
+                    {t('Clear')}
                   </Button>
                 )}
               </div>
@@ -166,7 +168,7 @@ export function Sidebar() {
 
             {/* Platform */}
             <div>
-              <p className="text-xs text-white/50 font-medium mb-2">Platform</p>
+              <p className="text-xs text-white/50 font-medium mb-2">{t('Platform')}</p>
               <div className="flex gap-2">
                 {(['ios', 'android'] as const).map((p) => (
                   <button
@@ -184,7 +186,7 @@ export function Sidebar() {
                         : 'border-white/8 text-white/40 hover:text-white/60'
                     }`}
                   >
-                    {p === 'ios' ? 'iOS' : 'Android'}
+                    {p === 'ios' ? t('iOS') : t('Android')}
                   </button>
                 ))}
               </div>
@@ -193,7 +195,7 @@ export function Sidebar() {
             <div className="h-px bg-white/6 mt-2" />
             {confirmingReset ? (
               <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 mt-2">
-                <span className="text-xs text-red-400 font-medium flex-1">Reset project?</span>
+                <span className="text-xs text-red-400 font-medium flex-1">{t('Reset project?')}</span>
                 <button
                   onClick={() => {
                     createNewProject();
@@ -202,13 +204,13 @@ export function Sidebar() {
                   }}
                   className="flex items-center gap-1 text-xs text-white bg-red-500/80 hover:bg-red-500 px-2 py-0.5 rounded-md transition-colors cursor-pointer font-medium"
                 >
-                  <Check className="w-3 h-3" /> Yes
+                  <Check className="w-3 h-3" /> {t('Yes')}
                 </button>
                 <button
                   onClick={() => setConfirmingReset(false)}
                   className="flex items-center gap-1 text-xs text-white/60 hover:text-white px-2 py-0.5 rounded-md hover:bg-white/5 transition-colors cursor-pointer"
                 >
-                  <X className="w-3 h-3" /> No
+                  <X className="w-3 h-3" /> {t('No')}
                 </button>
               </div>
             ) : (
@@ -218,7 +220,7 @@ export function Sidebar() {
                 className="w-full justify-center text-red-400/70 hover:text-red-400 hover:bg-red-400/5 mt-2"
                 onClick={() => setConfirmingReset(true)}
               >
-                Reset Project
+                {t('Reset Project')}
               </Button>
             )}
           </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProjectStore } from '../../store/useProjectStore';
 import { THEMES, THEME_TEMPLATE_JSON } from '../../lib/themes';
 import { FONT_PAIRINGS } from '../../lib/fonts';
@@ -8,31 +9,11 @@ import type { LayoutMode, FontPairingId, BackgroundType, ExtractedPalette, Theme
 import { Palette, Sparkles, Upload, Download, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '../ui/Button';
 
-const LAYOUT_MODES: { id: LayoutMode; label: string; desc: string }[] = [
-  { id: 'header-above', label: 'Header Above', desc: 'Title on top, device below' },
-  { id: 'device-above', label: 'Device Above', desc: 'Device on top, title below' },
-  { id: 'overlay', label: 'Overlay', desc: 'Device centered, text overlaid' },
-];
-
-const BG_TYPES: { id: BackgroundType; label: string }[] = [
-  { id: 'solid', label: 'Solid' },
-  { id: 'gradient', label: 'Gradient' },
-  { id: 'mesh', label: 'Mesh' },
-  { id: 'noise', label: 'Noise' },
-];
-
-const FRAME_STYLES: { id: 'dark' | 'light' | 'black' | 'white'; label: string }[] = [
-  { id: 'dark', label: 'Dark' },
-  { id: 'light', label: 'Light' },
-  { id: 'black', label: 'Black' },
-  { id: 'white', label: 'White' },
-];
-
-const TEXT_ALIGNS: { id: 'left' | 'center' | 'right'; label: string }[] = [
-  { id: 'left', label: 'Left' },
-  { id: 'center', label: 'Center' },
-  { id: 'right', label: 'Right' },
-];
+const LAYOUT_MODE_META = {
+  'header-above': { desc: 'Title on top, device below' },
+  'device-above': { desc: 'Device on top, title below' },
+  'overlay': { desc: 'Device centered, text overlaid' },
+} as const;
 
 function SectionHeader({ 
   label, isOpen, onToggle 
@@ -80,6 +61,7 @@ interface ThemePickerProps {
 }
 
 export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
+  const { t } = useTranslation();
   const {
     theme, setTheme,
     importThemeTemplate, exportThemeTemplate,
@@ -228,7 +210,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {activeResolutionScope !== 'global' && realEffectiveTheme.resolutionOverrides?.[activeResolutionScope] && (
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 p-2 mb-1 flex flex-col gap-2 items-center text-center">
           <span className="text-[10px] text-violet-300 tracking-wide">
-            Editing {activeResolutionScope.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')} Overrides
+            {t('Editing')} {activeResolutionScope.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')} {t('Overrides')}
           </span>
           <button
             onClick={() => {
@@ -242,7 +224,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
             }}
             className="text-[10px] text-white/50 hover:text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10 px-3 py-1 rounded-md cursor-pointer"
           >
-            Reset to Global Settings
+            {t('Reset to Global Settings')}
           </button>
         </div>
       )}
@@ -255,7 +237,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-              <span className="text-xs text-white/60 font-medium">Colors from Screenshot</span>
+              <span className="text-xs text-white/60 font-medium">{t('Colors from Screenshot')}</span>
             </div>
             <Button size="sm" variant="primary" onClick={() => {
               const gradient = buildGradientFromPalette(palette);
@@ -271,7 +253,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
               });
             }}>
               <Palette className="w-3 h-3" />
-              Apply
+              {t('Apply')}
             </Button>
           </div>
           <div className="flex gap-1.5">
@@ -280,7 +262,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
             ))}
           </div>
           <div>
-            <p className="text-[10px] text-white/35 mb-1.5">Smart themes — click to apply</p>
+            <p className="text-[10px] text-white/35 mb-1.5">{t('Smart themes — click to apply')}</p>
             <div className="flex gap-2">
               {generatePaletteThemes(palette).map((v) => (
                 <button
@@ -312,7 +294,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           PRESET THEMES
           ═══════════════════════════════════════════ */}
-      {view === 'design' && <SectionHeader label="Preset Themes" isOpen={expandedSections.presets ?? true} onToggle={() => toggleSection('presets')} />}
+      {view === 'design' && <SectionHeader label={t('Preset Themes')} isOpen={expandedSections.presets ?? true} onToggle={() => toggleSection('presets')} />}
       {view === 'design' && expandedSections.presets && (
         <div className="grid grid-cols-3 gap-2 mb-2">
           {THEMES.map((t) => (
@@ -338,7 +320,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
           {effectiveTheme.id === 'custom' && (
             <div className="h-14 rounded-xl overflow-hidden border-2 border-violet-400 flex items-end p-1.5"
               style={{ background: effectiveTheme.background }}>
-              <span className="text-[9px] font-semibold text-white/80">Custom</span>
+              <span className="text-[9px] font-semibold text-white/80">{t('Custom')}</span>
             </div>
           )}
         </div>
@@ -349,13 +331,13 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           COLORS
           ═══════════════════════════════════════════ */}
-      {view === 'design' && <SectionHeader label="Colors" isOpen={expandedSections.colors ?? true} onToggle={() => toggleSection('colors')} />}
+      {view === 'design' && <SectionHeader label={t('Colors')} isOpen={expandedSections.colors ?? true} onToggle={() => toggleSection('colors')} />}
       {view === 'design' && expandedSections.colors && (
         <div className="flex flex-col gap-3 mb-2">
           {/* Accent Color */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] text-white/50">Accent Color</span>
+              <span className="text-[11px] text-white/50">{t('Accent Color')}</span>
               <span className="text-[10px] text-white/30 font-mono">{effectiveTheme.accentColor}</span>
             </div>
             <div className="flex items-center gap-2 mb-2">
@@ -366,7 +348,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
                 className="w-9 h-9 rounded-xl cursor-pointer border border-white/10 bg-transparent"
               />
               <div className="flex-1">
-                <p className="text-[10px] text-white/35 mb-1">Smart Backgrounds</p>
+                <p className="text-[10px] text-white/35 mb-1">{t('Smart Backgrounds')}</p>
                 <div className="flex gap-1.5 flex-wrap">
                   {smartVariants.map((v) => (
                     <button
@@ -394,9 +376,14 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Background Type */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Background Type</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Background Type')}</span>
             <div className="flex gap-1 flex-wrap">
-              {BG_TYPES.map((b) => (
+              {[
+                { id: 'solid' as BackgroundType, label: t('Solid') },
+                { id: 'gradient' as BackgroundType, label: t('Gradient') },
+                { id: 'mesh' as BackgroundType, label: t('Mesh') },
+                { id: 'noise' as BackgroundType, label: t('Noise') },
+              ].map((b) => (
                 <button
                   key={b.id}
                   onClick={() => handleThemeChange({ backgroundType: b.id })}
@@ -417,18 +404,22 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           LAYOUT
           ═══════════════════════════════════════════ */}
-      {view === 'device' && <SectionHeader label="Layout" isOpen={expandedSections.layout ?? true} onToggle={() => toggleSection('layout')} />}
+      {view === 'device' && <SectionHeader label={t('Layout')} isOpen={expandedSections.layout ?? true} onToggle={() => toggleSection('layout')} />}
       {view === 'device' && expandedSections.layout && (
         <div className="flex flex-col gap-3 mb-2">
           {/* Layout Mode */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Layout Mode</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Layout Mode')}</span>
             <div className="flex gap-1">
-              {LAYOUT_MODES.map((mode) => (
+              {[
+                { id: 'header-above' as LayoutMode, label: t('Header Above') },
+                { id: 'device-above' as LayoutMode, label: t('Device Above') },
+                { id: 'overlay' as LayoutMode, label: t('Overlay') },
+              ].map((mode) => (
                 <button
                   key={mode.id}
                   onClick={() => handleThemeChange({ layoutMode: mode.id })}
-                  title={mode.desc}
+                  title={LAYOUT_MODE_META[mode.id].desc}
                   className={`flex-1 py-1.5 text-xs rounded-lg transition-colors cursor-pointer ${
                     effectiveTheme.layoutMode === mode.id
                       ? 'bg-violet-600 text-white'
@@ -443,9 +434,13 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Text Alignment */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Text Alignment</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Text Alignment')}</span>
             <div className="flex gap-1">
-              {TEXT_ALIGNS.map((a) => (
+              {[
+                { id: 'left' as const, label: t('Left') },
+                { id: 'center' as const, label: t('Center') },
+                { id: 'right' as const, label: t('Right') },
+              ].map((a) => (
                 <button
                   key={a.id}
                   onClick={() => handleThemeChange({ textAlign: a.id })}
@@ -463,17 +458,17 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Spacing Sliders */}
           <SliderRow
-            label="Top Padding" value={effectiveTheme.paddingTop ?? 0.05}
+            label={t('Top Padding')} value={effectiveTheme.paddingTop ?? 0.05}
             min={0.01} max={0.15} step={0.005} suffix="%"
             onChange={(v) => handleThemeChange({ paddingTop: v })}
           />
           <SliderRow
-            label="Bottom Padding" value={effectiveTheme.paddingBottom ?? 0.04}
+            label={t('Bottom Padding')} value={effectiveTheme.paddingBottom ?? 0.04}
             min={0.01} max={0.15} step={0.005} suffix="%"
             onChange={(v) => handleThemeChange({ paddingBottom: v })}
           />
           <SliderRow
-            label="Content Gap" value={effectiveTheme.contentGap ?? 0.02}
+            label={t('Content Gap')} value={effectiveTheme.contentGap ?? 0.02}
             min={0.005} max={0.08} step={0.005} suffix="%"
             onChange={(v) => handleThemeChange({ contentGap: v })}
           />
@@ -485,12 +480,12 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           TYPOGRAPHY
           ═══════════════════════════════════════════ */}
-      {view === 'design' && <SectionHeader label="Typography" isOpen={expandedSections.typography ?? true} onToggle={() => toggleSection('typography')} />}
+      {view === 'design' && <SectionHeader label={t('Typography')} isOpen={expandedSections.typography ?? true} onToggle={() => toggleSection('typography')} />}
       {view === 'design' && expandedSections.typography && (
         <div className="flex flex-col gap-3 mb-2">
           {/* Font Pairing */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Font Pairing</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Font Pairing')}</span>
             <div className="flex flex-col gap-1">
               {FONT_PAIRINGS.map((fp) => (
                 <button
@@ -510,13 +505,13 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Headline Weight */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Headline Weight</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Headline Weight')}</span>
             <div className="flex gap-1">
               {([
-                { w: 400, label: 'Light' },
-                { w: 600, label: 'Semi' },
-                { w: 700, label: 'Bold' },
-                { w: 900, label: 'Black' },
+                { w: 400, label: t('Light') },
+                { w: 600, label: t('Semi') },
+                { w: 700, label: t('Bold') },
+                { w: 900, label: t('Black') },
               ] as const).map((opt) => (
                 <button
                   key={opt.w}
@@ -536,7 +531,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Italic Toggle */}
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-white/50">Italic</span>
+            <span className="text-[11px] text-white/50">{t('Italic')}</span>
             <button
               onClick={() => handleThemeChange({ headlineItalic: !(effectiveTheme.headlineItalic ?? false) })}
               className={`relative w-9 h-5 rounded-full transition-colors cursor-pointer flex-shrink-0 ${
@@ -556,14 +551,19 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           DEVICE
           ═══════════════════════════════════════════ */}
-      {view === 'device' && <SectionHeader label="Device" isOpen={expandedSections.device ?? true} onToggle={() => toggleSection('device')} />}
+      {view === 'device' && <SectionHeader label={t('Device')} isOpen={expandedSections.device ?? true} onToggle={() => toggleSection('device')} />}
       {view === 'device' && expandedSections.device && (
         <div className="flex flex-col gap-3 mb-2">
           {/* Frame Style */}
           <div>
-            <span className="text-[11px] text-white/50 mb-1 block">Frame Style</span>
+            <span className="text-[11px] text-white/50 mb-1 block">{t('Frame Style')}</span>
             <div className="flex gap-1">
-              {FRAME_STYLES.map((fs) => (
+              {[
+                { id: 'dark' as const, label: t('Dark') },
+                { id: 'light' as const, label: t('Light') },
+                { id: 'black' as const, label: t('Black') },
+                { id: 'white' as const, label: t('White') },
+              ].map((fs) => (
                 <button
                   key={fs.id}
                   onClick={() => handleThemeChange({ deviceFrameStyle: fs.id })}
@@ -581,7 +581,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Screen Notch/Punch-hole toggle */}
           <div className="flex items-center justify-between py-0.5">
-            <span className="text-[11px] text-white/50">Device sensors & notch</span>
+            <span className="text-[11px] text-white/50">{t('Device sensors & notch')}</span>
             <button
               onClick={() => handleThemeChange({ showDeviceSensor: !(effectiveTheme.showDeviceSensor ?? true) })}
               className={`relative w-9 h-5 rounded-full transition-colors cursor-pointer flex-shrink-0 ${
@@ -595,7 +595,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
           </div>
 
           <div className="flex items-center justify-between py-0.5">
-            <span className="text-[11px] text-white/50">Generic uniform outline</span>
+            <span className="text-[11px] text-white/50">{t('Generic uniform outline')}</span>
             <button
               onClick={() => handleThemeChange({ deviceFrameType: (effectiveTheme.deviceFrameType ?? 'realistic') === 'generic' ? 'realistic' : 'generic' })}
               className={`relative w-9 h-5 rounded-full transition-colors cursor-pointer flex-shrink-0 ${
@@ -610,21 +610,21 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
 
           {/* Scale and Position Sliders */}
           <SliderRow
-            label="Device Size"
+            label={t('Device Size')}
             value={effectiveTheme.deviceSizeScale ?? 0.58}
             min={0.38} max={0.85} step={0.01} suffix="%"
             onChange={(v) => handleThemeChange({ deviceSizeScale: v })}
           />
 
           <SliderRow
-            label="Offset X"
+            label={t('Offset X')}
             value={effectiveTheme.deviceOffsetX ?? 0}
             min={-0.35} max={0.35} step={0.01} suffix="%"
             onChange={(v) => handleThemeChange({ deviceOffsetX: v })}
           />
 
           <SliderRow
-            label="Offset Y"
+            label={t('Offset Y')}
             value={effectiveTheme.deviceOffsetY ?? 0}
             min={-0.35} max={0.35} step={0.01} suffix="%"
             onChange={(v) => handleThemeChange({ deviceOffsetY: v })}
@@ -635,7 +635,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
               onClick={() => handleThemeChange({ deviceOffsetX: 0, deviceOffsetY: 0 })}
               className="text-xs text-white/35 hover:text-white/60 cursor-pointer transition-colors self-start"
             >
-              Reset position
+              {t('Reset position')}
             </button>
           )}
         </div>
@@ -646,16 +646,16 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           PILLS
           ═══════════════════════════════════════════ */}
-      {view === 'device' && <SectionHeader label="Floating Pills" isOpen={expandedSections.pills ?? true} onToggle={() => toggleSection('pills')} />}
+      {view === 'device' && <SectionHeader label={t('Floating Pills')} isOpen={expandedSections.pills ?? true} onToggle={() => toggleSection('pills')} />}
       {view === 'device' && expandedSections.pills && (
         <div className="flex flex-col gap-3 mb-2">
           <SliderRow
-            label="Vertical Spread" value={effectiveTheme.pillSpread ?? 0.6}
+            label={t('Vertical Spread')} value={effectiveTheme.pillSpread ?? 0.6}
             min={0.1} max={1.0} step={0.05} suffix="%"
             onChange={(v) => handleThemeChange({ pillSpread: v })}
           />
           <SliderRow
-            label="Side Inset" value={effectiveTheme.pillEdgeInset ?? 0.04}
+            label={t('Side Inset')} value={effectiveTheme.pillEdgeInset ?? 0.04}
             min={0.0} max={0.12} step={0.005} suffix="%"
             onChange={(v) => handleThemeChange({ pillEdgeInset: v })}
           />
@@ -667,21 +667,21 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
       {/* ═══════════════════════════════════════════
           JSON THEME IMPORT / EXPORT
           ═══════════════════════════════════════════ */}
-      {view === 'design' && <SectionHeader label="Custom Theme (JSON)" isOpen={expandedSections.json ?? false} onToggle={() => toggleSection('json')} />}
+      {view === 'design' && <SectionHeader label={t('Custom Theme (JSON)')} isOpen={expandedSections.json ?? false} onToggle={() => toggleSection('json')} />}
       {view === 'design' && expandedSections.json && (
         <div className="flex flex-col gap-2.5 mb-2">
           <p className="text-[10px] text-white/35 leading-relaxed">
-            Import a theme from JSON or export the current theme. Share the template below with an AI to generate custom themes.
+            {t('Import a theme from JSON or export the current theme. Share the template below with an AI to generate custom themes.')}
           </p>
 
           <div className="flex gap-1.5">
             <Button size="sm" onClick={handleImportTheme} className="flex-1 justify-center">
               <Upload className="w-3.5 h-3.5" />
-              Import
+              {t('Import')}
             </Button>
             <Button size="sm" onClick={handleExportTheme} className="flex-1 justify-center">
               <Download className="w-3.5 h-3.5" />
-              Export
+              {t('Export')}
             </Button>
           </div>
 
@@ -693,7 +693,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
             onClick={() => setShowTemplate(!showTemplate)}
             className="text-[11px] text-violet-400 hover:text-violet-300 cursor-pointer transition-colors text-left"
           >
-            {showTemplate ? 'Hide' : 'Show'} JSON Template
+            {(showTemplate ? t('Hide') : t('Show'))} {t('JSON Template')}
           </button>
 
           {showTemplate && (
@@ -704,7 +704,7 @@ export function ThemePicker({ extractedPalette, view }: ThemePickerProps) {
               <button
                 onClick={copyTemplate}
                 className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-                title="Copy template"
+                title={t('Copy template')}
               >
                 {copied
                   ? <Check className="w-3 h-3 text-green-400" />
