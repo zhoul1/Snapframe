@@ -172,14 +172,17 @@ export function Toolbar({ onOpenJsonEditor }: ToolbarProps) {
           <Redo2 className="w-3.5 h-3.5" />
         </Button>
         <div className="w-px h-5 bg-white/10" />
-        <Button size="sm" variant="ghost" onClick={() => {
-          const langs = ['en', 'zh-CN', 'zh-TW', 'ja'];
-          const idx = langs.indexOf(i18n.language);
-          i18n.changeLanguage(langs[(idx + 1) % langs.length]);
-        }} title={t('Language')}>
-          <Languages className="w-3.5 h-3.5" />
-          {{ en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日' }[i18n.language] ?? 'EN'}
-        </Button>
+        <Languages className="w-3.5 h-3.5 text-white/40" />
+        <select
+          className="bg-transparent text-xs font-medium text-white/90 outline-none cursor-pointer"
+          value={i18n.language}
+          onChange={(e) => i18n.changeLanguage(e.target.value)}
+        >
+          <option value="en" className="bg-[#1a1a2e]">English</option>
+          <option value="zh-CN" className="bg-[#1a1a2e]">简体中文</option>
+          <option value="zh-TW" className="bg-[#1a1a2e]">繁體中文</option>
+          <option value="ja" className="bg-[#1a1a2e]">日本語</option>
+        </select>
         <div className="w-px h-5 bg-white/10" />
         <Button size="sm" variant="secondary" onClick={handleExportSlide} disabled={exportingSlide}>
           {exportingSlide ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Image className="w-3.5 h-3.5" />}
