@@ -37,11 +37,10 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-72 flex-shrink-0 bg-[#0d0d18] border-r border-white/6 flex flex-col h-full">
-      
+    <aside className="w-72 flex-shrink-0 bg-[var(--surface-bg)] border-r border-[var(--border-subtle)] flex flex-col h-full">
 
       {/* Nav tabs */}
-      <div className="flex border-b border-white/6">
+      <div className="flex border-b border-[var(--border-subtle)]">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -50,7 +49,7 @@ export function Sidebar() {
             className={`flex-1 flex flex-col items-center gap-1 py-3 text-[10px] font-medium transition-colors cursor-pointer ${
               panel === item.id
                 ? 'text-violet-400 border-b-2 border-violet-500'
-                : 'text-white/35 hover:text-white/60 border-b-2 border-transparent'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-tertiary)] border-b-2 border-transparent'
             }`}
           >
             {item.icon}
@@ -78,20 +77,20 @@ export function Sidebar() {
                     className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all cursor-pointer text-left ${
                       isActive
                         ? 'border-violet-500/50 bg-violet-600/10'
-                        : 'border-white/6 hover:border-white/12 hover:bg-white/4'
+                        : 'border-[var(--border-subtle)] hover:border-[var(--border-light)] hover:bg-[var(--fill-extra-light)]'
                     }`}
                   >
                     {/* Mini thumbnail */}
-                    <div className="w-8 h-14 rounded-lg overflow-hidden bg-white/5 border border-white/8 flex-shrink-0">
+                    <div className="w-8 h-14 rounded-lg overflow-hidden bg-[var(--fill-raised)] border border-[var(--border-light)] flex-shrink-0">
                       {slide.imageDataUrl && (
                         <img src={slide.imageDataUrl} alt="" className="w-full h-full object-cover" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className={`text-xs font-medium truncate ${isActive ? 'text-white' : 'text-white/60'}`}>
+                        <p className={`text-xs font-medium truncate ${isActive ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'}`}>
                           {slide.header || t('Untitled')}
                         </p>
-                        <p className="text-[10px] text-white/30 mt-0.5">{t('Slide')} {idx + 1}</p>
+                        <p className="text-[10px] text-[var(--text-muted)] mt-0.5">{t('Slide')} {idx + 1}</p>
                     </div>
                   </button>
                 );
@@ -107,13 +106,13 @@ export function Sidebar() {
             >
               <Plus className="w-3.5 h-3.5" />
               {t('Add Slide')}
-              <span className="text-white/30 text-[10px] ml-1">{slides.length}/10</span>
+              <span className="text-[var(--text-muted)] text-[10px] ml-1">{slides.length}/10</span>
             </Button>
 
             {/* Active slide editor */}
             {activeSlide && (
               <>
-                <div className="h-px bg-white/6" />
+                <div className="h-px bg-[var(--border-subtle)]" />
                 <SlideEditor slide={activeSlide} />
               </>
             )}
@@ -142,16 +141,16 @@ export function Sidebar() {
 
             {/* App icon upload */}
             <div>
-              <p className="text-xs text-white/50 font-medium mb-2">{t('App Icon')}</p>
+              <p className="text-xs text-[var(--text-tertiary)] font-medium mb-2">{t('App Icon')}</p>
               <div className="flex items-center gap-3">
                 <div
                   onClick={() => iconRef.current?.click()}
-                  className="w-14 h-14 rounded-2xl overflow-hidden bg-white/6 border border-white/10 cursor-pointer hover:border-violet-500/50 transition-colors flex items-center justify-center"
+                  className="w-14 h-14 rounded-2xl overflow-hidden bg-[var(--fill-raised)] border border-[var(--border-light)] cursor-pointer hover:border-violet-500/50 transition-colors flex items-center justify-center"
                 >
                   {meta.iconDataUrl ? (
                     <img src={meta.iconDataUrl} alt="Icon" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xs text-white/30">{t('App Icon')}</span>
+                    <span className="text-xs text-[var(--text-muted)]">{t('App Icon')}</span>
                   )}
                 </div>
                 <Button size="sm" onClick={() => iconRef.current?.click()}>
@@ -168,7 +167,7 @@ export function Sidebar() {
 
             {/* Platform */}
             <div>
-              <p className="text-xs text-white/50 font-medium mb-2">{t('Platform')}</p>
+              <p className="text-xs text-[var(--text-tertiary)] font-medium mb-2">{t('Platform')}</p>
               <div className="flex gap-2">
                 {(['ios', 'android'] as const).map((p) => (
                   <button
@@ -182,8 +181,8 @@ export function Sidebar() {
                     }}
                     className={`flex-1 py-2 text-xs rounded-xl border transition-colors cursor-pointer capitalize ${
                       meta.platform.includes(p)
-                        ? 'border-violet-500/60 bg-violet-600/15 text-white'
-                        : 'border-white/8 text-white/40 hover:text-white/60'
+                        ? 'border-violet-500/60 bg-violet-600/15 text-[var(--text-primary)]'
+                        : 'border-[var(--border-light)] text-[var(--text-muted)] hover:text-[var(--text-tertiary)]'
                     }`}
                   >
                     {p === 'ios' ? t('iOS') : t('Android')}
@@ -192,7 +191,7 @@ export function Sidebar() {
               </div>
             </div>
 
-            <div className="h-px bg-white/6 mt-2" />
+            <div className="h-px bg-[var(--border-subtle)] mt-2" />
             {confirmingReset ? (
               <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 mt-2">
                 <span className="text-xs text-red-400 font-medium flex-1">{t('Reset project?')}</span>
@@ -208,7 +207,7 @@ export function Sidebar() {
                 </button>
                 <button
                   onClick={() => setConfirmingReset(false)}
-                  className="flex items-center gap-1 text-xs text-white/60 hover:text-white px-2 py-0.5 rounded-md hover:bg-white/5 transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] px-2 py-0.5 rounded-md hover:bg-[var(--fill-raised)] transition-colors cursor-pointer"
                 >
                   <X className="w-3 h-3" /> {t('No')}
                 </button>
